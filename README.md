@@ -1,3 +1,45 @@
+# Ninebarc Coding Challenge
+
+You need to create a React application that:
+
+Asks the user for their name.
+Starts asking the user a question (it could be How much time are you planning on staying in the city but we leave it up to you how many and what kind of questions to ask), and based on the response it will ask another relevant question. This will simulate a simple decision tree.
+At the end of the questionnaire, the application should recommend a ticket to the user in a final page that will also summarize the questions asked previously.
+
+## Assumptions
+
+- Travelling with bicycles BC = AB
+- Day ticket AB=BC
+- Seven day ticket AB=BC
+- Seven day to day ticket comparison doesn't consider few trips spread on several days. Several one way tickets could be cheaper
+- Day tickets need 1 bike ticket per trip
+- Multiple rides could be further optimized by getting cheaper zone tickets on different days/rides
+
+The decision tree on which the app is based is as follows:
+
+[Decision Tree] (tree.jpg)
+
+
+## Design Decisions
+
+- The app was created using create-react-app for simplicity and speed.
+- The app was made having in mind separation of concerns, scalability and legibility.
+- The business logic (prices, types of tickets and conditions) was abstracted to a json file to simulate data being fetched from the backend and make it easy to modify.
+- Due to the relatively low amount of data and components, the state of the app is managed on a single component without the need of prop drilling. In case the app get optimized by separating the large QuestionContainer component into smaller components, the possibility of a more robust state management approach should be considered.
+- The workflow of the app was designed so that a input validation service is set in place to check that the user inputs comply with the needed format. However due to lack of time it was not possible to implement the different conditions necessary for validation, and so remains deactivated for the time being. 
+
+## Observations
+
+- The code would be considerably leaner if all the data could be entered by the user at the same time. Due to the way the challenge was designed this was not possible.
+
+- There are bugs when going through the right side of the decision tree that could not be fixed due to time constraints.
+
+- Ideally the question handling logic should be separated from the component and the UI and set apart on a service class or function.
+
+## How to run
+
+Below are the create-react-app instructions to run and build the app.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

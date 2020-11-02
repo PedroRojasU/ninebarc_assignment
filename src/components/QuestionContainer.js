@@ -4,45 +4,27 @@ import './QuestionContainer.scss';
 import questions from '../assets/data/questions.json';
 import tickets from '../assets/data/tickets.json';
 import validateInput from '../services/validateInput';
-import { rules } from '../services/questionSelector';
+import { rules } from '../services/rules';
 
 const QuestionContainer = props => {
 
     const [currentQuestionText, setCurrentQuestionText] = useState(questions.getName);
     const [questionLog, setQuestionLog] = useState([]);
     const [currentInputValue, setCurrentInputValue] = useState("");
-    const [currentChoiceValue, setCurrentChoiceValue] = useState("");
-    const [userName, setUserName] = useState("");
     const [numberOfPassengers, setNumberOfPassengers] = useState(1);
-    const [age, setAge] = useState([]);//[44,12,33,2,4]
     const [areReducedTickets, setAreReducedTickets] = useState(false);
-    const [bicycles, setBicycles] = useState(0);
     const [zone, setZone] = useState([]); //["ABC","AB"]
-    const [ridesPerDay, setRidesPerDay] = useState([]); //[1, 2, 5, 10]
-    const [stayTimeDays, setStayTimeDays] = useState(1); //[1, 2, 5, 10]
-    const [costPerDay, setCostPerDay] = useState([]); //wip
-    const [isSingleRide, setIsSingleRide] = useState();
-    const [isSigleDay, setIsSingleDay] = useState();
-    const [isShortRide, setIsShortRide] = useState();
-    const [manyRides, setManyRides] = useState();
-    const [bicycleSubtotal, setBicycleSubtotal] = useState(0);
     const [treeLocation, setTreeLocation] = useState([]);
     const [bikeSubtotal, setBikeSubtotal] = useState(0);
     const [totalCost, setTotalCost] = useState(0);
     const [recommendedTicket, setRecommendedTicket] = useState([]);
     const [stage, setStage] = useState("questions");
 
-    // console.log(costs);
-
     const inputChangeHandler = e => {
         setCurrentInputValue(e.target.value);
     }
 
     const questionChangeHandler = () => {
-
-        console.log(currentInputValue);
-        console.log(rules);
-        console.log(questionLog);
 
         if (!questionLog.slice(-1)[0] && validateInput("name", currentInputValue)) { //Getting name
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "name" }]);
@@ -158,7 +140,6 @@ const QuestionContainer = props => {
         }
         //Multiple ride, single day - Asking if bike
         if (treeLocation.slice(-2)[0] === "single day" && treeLocation.slice(-1)[0] === "zone" && validateInput("zone", currentInputValue)) {
-            console.log("ASDFSDAFDFDSFDSFSFSDFSFSDFSDFSDFSDFDSFDSFDSFSDFSDFSDFDSFSDF");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "bike" }]);
             areReducedTickets ? setCurrentQuestionText(questions.dayVsSingleReduced) : setCurrentQuestionText(questions.dayVsSingleNormal);
             if (parseInt(currentInputValue) > 0) {
@@ -277,21 +258,9 @@ const QuestionContainer = props => {
         setCurrentQuestionText(questions.getName);
         setQuestionLog([]);
         setCurrentInputValue("");
-        setCurrentChoiceValue("");
-        setUserName("");
         setNumberOfPassengers(1);
-        setAge([]);
         setAreReducedTickets(false);
-        setBicycles(0);
         setZone([]);
-        setRidesPerDay([]);
-        setStayTimeDays(1);
-        setCostPerDay([]);
-        setIsSingleRide();
-        setIsSingleDay();
-        setIsShortRide();
-        setManyRides();
-        setBicycleSubtotal();
         setTreeLocation();
         setBikeSubtotal(0);
         setTotalCost(0);
@@ -335,7 +304,6 @@ const QuestionContainer = props => {
                     <button onClick={questionChangeHandler}><strong>Continue</strong></button>
                 </div>
             </React.Fragment> : results}
-            {treeLocation.length}
         </div>
     );
 }
