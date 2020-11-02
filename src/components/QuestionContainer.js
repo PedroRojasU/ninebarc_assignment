@@ -163,10 +163,6 @@ const QuestionContainer = props => {
             return;
         }
         //Multiple ride, single day - day vs multi one way ticket (reduced)
-        console.log(treeLocation);
-        console.log(treeLocation.slice(-3)[0] === "single ride");
-        console.log(treeLocation.slice(-2)[0] === "zone");
-        console.log(areReducedTickets);
         if (treeLocation.slice(-3)[0] === "single day" && treeLocation.slice(-2)[0] === "zone" && areReducedTickets && validateInput("day vs one way", currentInputValue)) {
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "day vs one way" }]);
             let ticketType = areReducedTickets ? "reduced" : "normal";
