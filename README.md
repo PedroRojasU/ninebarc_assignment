@@ -17,7 +17,7 @@ At the end of the questionnaire, the application should recommend a ticket to th
 
 The decision tree on which the app is based is as follows:
 
-[Decision Tree] (tree.jpg)
+![Decision Tree](./tree.jpg "Decision Tree")
 
 
 ## Design Decisions
