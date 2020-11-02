@@ -1,0 +1,8 @@
+{
+    "short": "Short ride ticket",
+    "oneWay": "One way ticket",
+    "day": "Day ticket",
+    "week": "Seven day ticket",
+    "group": "Group day ticket",
+    "bicycle": "Bicycle ticket"
+}

@@ -5,11 +5,11 @@
     "getAgeOfPassengers": "What are the ages of the people in your group?",
     "bikes": "Are you travelling with bikes? How many?",
     "singleRide": "How many rides are you planning?",
-    "zone": "Please select the correct zone for your rides. A is the area inside the S-Bahn ring. B is outside the S-Bahn ring but within the city. C is the outskirts of the city and Potsdam",
-    "short": "Is your ride Short? (3 stops with S and U-Bahn or 6 stops with buses and trams. Changing trains is allowed)",
-    "singleDay": "Are you travelling on one or multiple days?",
-    "dayVsSingleNormal": "Are you planning more than 2 rides?",
-    "dayVsSingleReduced": "Are you planning more than 3 rides?",
-    "weekVsDayTicketNormalAB": "Are you travelling on more than 3 different days?",
-    "weekVsDayTicketNormalABC": "Are you travelling on more than 4 different days?"
+    "zone": "Please select the correct zone for your rides. A is the area inside the S-Bahn ring. B is outside the S-Bahn ring but within the city. C is the outskirts of the city and Potsdam (AB,BC,ABC)",
+    "short": "Is your ride Short? (3 stops with S and U-Bahn or 6 stops with buses and trams. Changing trains is allowed) (yes/no)",
+    "singleDay": "Are you travelling on one or multiple days? (one/many)",
+    "dayVsSingleNormal": "Are you planning more than 2 rides? If not, how many? (yes/number)",
+    "dayVsSingleReduced": "Are you planning more than 3 rides? If not, how many? (yes/number)",
+    "weekVsDayTicketNormalAB": "Are you travelling on more than 3 different days? If not, how many? (yes/number)",
+    "weekVsDayTicketNormalABC": "Are you travelling on more than 4 different days? If not, how many? (yes/number)"
 }

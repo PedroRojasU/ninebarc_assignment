@@ -3,7 +3,7 @@ import './AppHeader.scss';
 
 const AppHeader = () => {
     return (
-        <div className="app-header">Header</div>
+        <div className="app-header"></div>
     )
 };
 

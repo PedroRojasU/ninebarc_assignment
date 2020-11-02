@@ -10,6 +10,11 @@ body {
 
 .app-content {
     height: 90vh;
+    overflow-y: scroll;
+}
+
+.app-content {
+    font-size: 35px;
 }
 
 .App h1 {
