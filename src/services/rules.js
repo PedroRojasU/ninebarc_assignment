@@ -45,18 +45,19 @@ export const rules = {
                     }
                 },
                 multiple: {
-
                     singleDay: {
                         ticketType: {
                             normal: {
                                 typeOfRide: {
                                     moreThan2: {
+                                        rides:">2",
                                         ticketRule: "Buy day ticket",
                                         AB: 8.6,
                                         BC: 8.6,
                                         ABC: 9.6,
                                     },
                                     lessThan2: {
+                                        rides:"<2",
                                         ticketRule: "Buy single tickets",
                                         AB: 2.9,
                                         BC: 3.3,
@@ -68,12 +69,14 @@ export const rules = {
                             reduced: {
                                 typeOfRide: {
                                     moreThan3: {
+                                        rides:">3",
                                         ticketRule: "Buy day ticket",
                                         AB: 5.5,
                                         BC: 5.5,
                                         ABC: 6,
                                     },
                                     lessThan3: {
+                                        rides:"<3",
                                         ticketRule: "Buy single tickets",
                                         AB: 1.8,
                                         BC: 2.3,
@@ -86,11 +89,13 @@ export const rules = {
                     multipleDay: {
                         ticketType: {
                             AB: {
-                                moreThan3: {
+                                overThreshold: {
+                                    days: ">3",
                                     ticketRule: "Buy 7 day ticket",
                                     cost: 34
                                 },
-                                lessThan3: {
+                                underThreshold: {
+                                    days: "<3",
                                     ticketRule: "Buy multiple day tickets",
                                     cost: {
                                         normal: 8.6,
@@ -99,12 +104,12 @@ export const rules = {
                                 },
                             },
                             BC: {
-                                moreThan3: {
+                                overThreshold: {
                                     days: ">3",
                                     ticketRule: "Buy 7 day ticket",
                                     cost: 34
                                 },
-                                lessThan3: {
+                                underThreshold: {
                                     days: "<3",
                                     ticketRule: "Buy multiple day tickets",
                                     cost: {
@@ -115,12 +120,12 @@ export const rules = {
 
                             },
                             ABC: {
-                                moreThan3: {
+                                overThreshold: {
                                     days: ">4",
                                     ticketRule: "Buy 7 day ticket",
                                     cost: 41
                                 },
-                                lessThan3: {
+                                underThreshold: {
                                     days: "<4",
                                     ticketRule: "Buy multiple day tickets",
                                     cost: {

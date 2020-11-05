@@ -25,17 +25,25 @@ const QuestionContainer = props => {
     }
 
     const questionChangeHandler = () => {
-
-        if (!questionLog.slice(-1)[0] && validateInput("name", currentInputValue)) { //Getting name
+        console.log(`Are reduced?: ${areReducedTickets}`);
+        console.log(treeLocation);
+        console.log(questionLog);
+        console.log(currentQuestionText);
+        //Getting name
+        if (!questionLog.slice(-1)[0] && validateInput("name", currentInputValue)) {
+            console.log("Getting name");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "name" }]);
             setCurrentInputValue("");
             setCurrentQuestionText(questions.getAgeOfPassenger);
             return;
         }
-        if (questionLog.slice(-1)[0].key === "name" && validateInput("age", currentInputValue)) { //Getting age
+        //Getting age
+        if (questionLog.slice(-1)[0].key === "name" && validateInput("age", currentInputValue)) {
+            console.log("Getting age");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "age" }]);
             rules.ridingRules.ageGroup.forEach(rule => {
-                if (parseInt(currentInputValue) >= rule.min && parseInt(currentInputValue) <= rule.max) {
+                if (parseInt(currentInputValue) > rule.min && parseInt(currentInputValue) <= rule.max) {
+                    console.log("Ticket is reduced!");
                     setAreReducedTickets(rule.isReducedPrice);
                 }
             });
@@ -43,7 +51,9 @@ const QuestionContainer = props => {
             setCurrentQuestionText(questions.singleRide);
             return;
         }
-        if (questionLog.slice(-1)[0].key === "age" && validateInput("single ride", currentInputValue)) { //Asking if single ride
+        //Asking if single ride
+        if (questionLog.slice(-1)[0].key === "age" && validateInput("single ride", currentInputValue)) {
+            console.log("Asking if single ride");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "single ride" }]);
             if (parseInt(currentInputValue) === 1) {
                 setCurrentQuestionText(questions.zone);
@@ -55,7 +65,9 @@ const QuestionContainer = props => {
             setCurrentInputValue("");
             return;
         }
-        if (treeLocation.slice(-1)[0] === "single ride" && validateInput("zone", currentInputValue)) { //Single ride - Getting zone
+        //Single ride - Getting zone
+        if (treeLocation.slice(-1)[0] === "single ride" && validateInput("zone", currentInputValue)) {
+            console.log("Single ride - Getting zone");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "zone" }]);
             setCurrentQuestionText(questions.short);
             setZone(currentInputValue);
@@ -63,7 +75,9 @@ const QuestionContainer = props => {
             setCurrentInputValue("");
             return;
         }
-        if (treeLocation.slice(-1)[0] === "multiple ride" && validateInput("single day", currentInputValue)) { //Multiple ride - Asking if single day
+        //Multiple ride - Asking if single day
+        if (treeLocation.slice(-1)[0] === "multiple ride" && validateInput("single day", currentInputValue)) {
+            console.log("Multiple ride - Asking if single day");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "single day" }]);
             setCurrentQuestionText(questions.zone);
             if (currentInputValue.toLowerCase().trim() === "one") {
@@ -76,6 +90,7 @@ const QuestionContainer = props => {
         }
         //Single ride - Asking if short ride
         if (treeLocation.slice(-2)[0] === "single ride" && treeLocation.slice(-1)[0] === "zone" && validateInput("short ride", currentInputValue)) {
+            console.log("Single ride - Asking if short ride");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "short ride" }]);
             setCurrentQuestionText(questions.bikes);
             if (currentInputValue.toLowerCase().trim() === "yes") {
@@ -88,6 +103,7 @@ const QuestionContainer = props => {
         }
         //Multiple ride, single day - Getting zone
         if (treeLocation.slice(-2)[0] === "multiple ride" && treeLocation.slice(-1)[0] === "single day" && validateInput("zone", currentInputValue)) {
+            console.log("Multiple ride, single day - Getting zone");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "zone" }]);
             setCurrentQuestionText(questions.bikes);
             setZone(currentInputValue);
@@ -97,6 +113,7 @@ const QuestionContainer = props => {
         }
         //Multiple ride, multiple day - Getting zone
         if (treeLocation.slice(-2)[0] === "multiple ride" && treeLocation.slice(-1)[0] === "multiple day" && validateInput("zone", currentInputValue)) {
+            console.log("Multiple ride, multiple day - Getting zone");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "zone" }]);
             setCurrentQuestionText(questions.bikes);
             setZone(currentInputValue);
@@ -106,6 +123,7 @@ const QuestionContainer = props => {
         }
         //Single ride, short ride - Asking if bike
         if (treeLocation.slice(-3)[0] === "single ride" && treeLocation.slice(-2)[0] === "zone" && treeLocation.slice(-1)[0] === "short ride" && validateInput("bike", currentInputValue)) {
+            console.log("Single ride, short ride - Asking if bike");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "bike" }]);
             let ticketType = areReducedTickets ? "reduced" : "normal";
             let ticketCost = rules.ridingRules.singlePassenger.ride.single.rideDistance.short.price;
@@ -123,6 +141,7 @@ const QuestionContainer = props => {
         }
         //Single ride, long ride - Asking if bike
         if (treeLocation.slice(-3)[0] === "single ride" && treeLocation.slice(-2)[0] === "zone" && treeLocation.slice(-1)[0] === "long ride" && validateInput("bike", currentInputValue)) {
+            console.log("Single ride, long ride - Asking if bike");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "bike" }]);
             let ticketType = areReducedTickets ? "reduced" : "normal";
             let ticketCost = rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone][ticketType];
@@ -140,16 +159,19 @@ const QuestionContainer = props => {
         }
         //Multiple ride, single day - Asking if bike
         if (treeLocation.slice(-2)[0] === "single day" && treeLocation.slice(-1)[0] === "zone" && validateInput("zone", currentInputValue)) {
+            console.log("Multiple ride, single day - Asking if bike");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "bike" }]);
             areReducedTickets ? setCurrentQuestionText(questions.dayVsSingleReduced) : setCurrentQuestionText(questions.dayVsSingleNormal);
             if (parseInt(currentInputValue) > 0) {
                 setBikeSubtotal(rules.ridingRules.bike.price[zone] * numberOfPassengers);
             }
+            setTreeLocation(prevState => [...prevState, "bike"]);
             setCurrentInputValue("");
             return;
         }
         //Multiple ride, multiple day - Asking if bike
         if (treeLocation.slice(-2)[0] === "multiple day" && treeLocation.slice(-1)[0] === "zone" && validateInput("zone", currentInputValue)) {
+            console.log("Multiple ride, multiple day - Asking if bike");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "bike" }]);
             if (zone === "AB" || zone === "BC") {
                 setCurrentQuestionText(questions.weekVsDayTicketNormalAB);
@@ -159,14 +181,16 @@ const QuestionContainer = props => {
             if (parseInt(currentInputValue) > 0) {
                 setBikeSubtotal(rules.ridingRules.bike.price[zone] * numberOfPassengers);
             }
+            setTreeLocation(prevState => [...prevState, "bike"]); ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             setCurrentInputValue("");
             return;
         }
         //Multiple ride, single day - day vs multi one way ticket (reduced)
         if (treeLocation.slice(-3)[0] === "single day" && treeLocation.slice(-2)[0] === "zone" && areReducedTickets && validateInput("day vs one way", currentInputValue)) {
+            console.log("Multiple ride, single day - day vs multi one way ticket (reduced)");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "day vs one way" }]);
             let ticketType = areReducedTickets ? "reduced" : "normal";
-            let resultArray;
+            let resultArray = [];
             let ticketCost;
             if (currentInputValue === "yes") {
                 resultArray = [numberOfPassengers + " " + tickets.day + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.moreThan3[zone]];
@@ -175,9 +199,12 @@ const QuestionContainer = props => {
                 resultArray = [currentInputValue + " " + tickets.oneWay + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.moreThan3[zone]];
                 ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].reduced;
             }
-            ticketCost = rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone][ticketType];
             if (bikeSubtotal > 0) {
+                console.log("ticket cost before bike");
+                console.log(ticketCost);
                 ticketCost = ticketCost + (rules.ridingRules.bike.price[zone] * numberOfPassengers);
+                console.log("ticket cost AFTER bike");
+                console.log(ticketCost);
                 resultArray.push("1 " + tickets.bicycle + ": " + rules.ridingRules.bike.price[zone]);
             }
             setRecommendedTicket(resultArray);
@@ -188,16 +215,43 @@ const QuestionContainer = props => {
         }
         //Multiple ride, single day - day vs multi one way ticket (normal)
         if (treeLocation.slice(-3)[0] === "single day" && treeLocation.slice(-2)[0] === "zone" && !areReducedTickets && validateInput("day vs one way", currentInputValue)) {
+            console.log("Multiple ride, single day - day vs multi one way ticket (normal)");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "day vs one way" }]);
             let ticketType = areReducedTickets ? "reduced" : "normal";
+            let resultArray = [];
+            let ticketCost;
+            if (currentInputValue === "yes") {
+                resultArray = [numberOfPassengers + " " + tickets.day + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.normal.typeOfRide.moreThan2[zone]];
+                ticketCost = rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.normal.typeOfRide.moreThan2[zone];
+            } else {
+                resultArray = [currentInputValue + " " + tickets.oneWay + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].normal];
+                ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].normal;
+            }
+            if (bikeSubtotal > 0) {
+                ticketCost = ticketCost + (rules.ridingRules.bike.price[zone] * numberOfPassengers);
+                resultArray.push("1 " + tickets.bicycle + ": " + rules.ridingRules.bike.price[zone]);
+            }
+            console.log(resultArray);
+            setRecommendedTicket(resultArray);
+            setTotalCost(ticketCost);
+            setCurrentInputValue("");
+            setStage("results");
+            return;
+        }
+        //Multiple ride, multiple day - week vs multi day ticket (AB||BC)
+        if (treeLocation.slice(-3)[0] === "multiple day" && treeLocation.slice(-2)[0] === "zone" && (zone === "AB" || zone === "BC") && validateInput("weekly vs day tickets", currentInputValue)) {
+            console.log("Multiple ride, multiple day - week vs multi day ticket (AB||BC)");
+            setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "week vs multiple one day" }]);
+            let ticketType = areReducedTickets ? "reduced" : "normal";
+            // let thresholdText = areReducedTickets ? "moreThan3" : "moreThan2";
             let resultArray;
             let ticketCost;
             if (currentInputValue === "yes") {
-                resultArray = [numberOfPassengers + " " + tickets.day + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.normal.typeOfRide.moreThan2[zone].normal];
-                ticketCost = rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.moreThan3[zone];
+                resultArray = [numberOfPassengers + " " + tickets.week + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.multipleDay.ticketType[zone].overThreshold.cost];
+                ticketCost = rules.ridingRules.singlePassenger.ride.multiple.multipleDay.ticketType[zone].overThreshold.cost;
             } else {
-                resultArray = [currentInputValue + " " + tickets.oneWay + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.normal.typeOfRide.moreThan2[zone]];
-                ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].normal;
+                resultArray = [currentInputValue + " " + tickets.day + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.moreThan3[zone]];
+                ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.moreThan2[zone];
             }
             if (bikeSubtotal > 0) {
                 ticketCost = ticketCost + (rules.ridingRules.bike.price[zone] * numberOfPassengers);
@@ -209,8 +263,9 @@ const QuestionContainer = props => {
             setStage("results");
             return;
         }
-        //Multiple ride, multiple day - week vs multi day ticket (AB||BC)
-        if (treeLocation.slice(-3)[0] === "multiple ride" && treeLocation.slice(-2)[0] === "zone" && (zone === "AB" || zone === "BC") && validateInput("weekly vs day tickets", currentInputValue)) {
+        //Multiple ride, multiple day - week vs multi day ticket (ABC)
+        if (treeLocation.slice(-3)[0] === "multiple day" && treeLocation.slice(-2)[0] === "zone" && zone === "ABC" && validateInput("weekly vs day tickets", currentInputValue)) {
+            console.log("Multiple ride, multiple day - week vs multi day ticket (ABC)");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "week vs multiple one day" }]);
             let ticketType = areReducedTickets ? "reduced" : "normal";
             let resultArray;
@@ -222,24 +277,9 @@ const QuestionContainer = props => {
                 resultArray = [currentInputValue + " " + tickets.day + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.moreThan3[zone]];
                 ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.moreThan2[zone];
             }
-            setRecommendedTicket(resultArray);
-            setTotalCost(ticketCost);
-            setCurrentInputValue("");
-            setStage("results");
-            return;
-        }
-        //Multiple ride, multiple day - week vs multi day ticket (ABC)
-        if (treeLocation.slice(-3)[0] === "multiple ride" && treeLocation.slice(-2)[0] === "zone" && zone === "ABC" && validateInput("weekly vs day tickets", currentInputValue)) {
-            setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "week vs multiple one day" }]);
-            let ticketType = areReducedTickets ? "reduced" : "normal";
-            let resultArray;
-            let ticketCost;
-            if (currentInputValue === "yes") {
-                resultArray = [numberOfPassengers + " " + tickets.week + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.multipleDay.ticketType[zone].moreThan3.cost];
-                ticketCost = rules.ridingRules.singlePassenger.ride.multiple.multipleDay.ticketType[zone].moreThan3.cost;
-            } else {
-                resultArray = [currentInputValue + " " + tickets.day + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.moreThan3[zone]];
-                ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.moreThan2[zone];
+            if (bikeSubtotal > 0) {
+                ticketCost = ticketCost + (rules.ridingRules.bike.price[zone] * numberOfPassengers);
+                resultArray.push("1 " + tickets.bicycle + ": " + rules.ridingRules.bike.price[zone]);
             }
             setRecommendedTicket(resultArray);
             setTotalCost(ticketCost);

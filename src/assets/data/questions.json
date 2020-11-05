@@ -4,7 +4,7 @@
     "getAgeOfPassenger": "How old are you?",
     "getAgeOfPassengers": "What are the ages of the people in your group?",
     "bikes": "Are you travelling with bikes? How many?",
-    "singleRide": "How many rides are you planning?",
+    "singleRide": "How many rides are you planning? (ex: 3)",
     "zone": "Please select the correct zone for your rides. A is the area inside the S-Bahn ring. B is outside the S-Bahn ring but within the city. C is the outskirts of the city and Potsdam (AB,BC,ABC)",
     "short": "Is your ride Short? (3 stops with S and U-Bahn or 6 stops with buses and trams. Changing trains is allowed) (yes/no)",
     "singleDay": "Are you travelling on one or multiple days? (one/many)",
