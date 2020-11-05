@@ -27,11 +27,6 @@ const QuestionContainer = props => {
 
     const questionChangeHandler = () => {
         setIsValidInput(true);
-
-        console.log(`Are reduced?: ${areReducedTickets}`);
-        console.log(treeLocation);
-        console.log(questionLog);
-        console.log(currentQuestionText);
         //Getting name
         if (!questionLog.slice(-1)[0] && validateInput("name", currentInputValue)) {
             console.log("Getting name");
@@ -47,7 +42,6 @@ const QuestionContainer = props => {
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "age" }]);
             rules.ridingRules.ageGroup.forEach(rule => {
                 if (parseInt(currentInputValue) > rule.min && parseInt(currentInputValue) <= rule.max) {
-                    console.log("Ticket is reduced!");
                     setAreReducedTickets(rule.isReducedPrice);
                 }
             });
@@ -136,9 +130,6 @@ const QuestionContainer = props => {
             if (parseInt(currentInputValue) > 0) {
                 ticketCost = ticketCost + rules.ridingRules.bike.price[zone] * numberOfPassengers;
                 resultArray.push("1 " + tickets.bicycle + ": " + rules.ridingRules.bike.price[zone]);
-                console.log("HEEEEEEEEEEEERE");
-                console.log(rules.ridingRules.bike.price[zone]);
-                console.log(rules);
             }
             setRecommendedTicket(resultArray);
             setTotalCost(ticketCost);
@@ -233,7 +224,6 @@ const QuestionContainer = props => {
                 ticketCost = ticketCost + (rules.ridingRules.bike.price[zone] * numberOfPassengers);
                 resultArray.push("1 " + tickets.bicycle + ": " + rules.ridingRules.bike.price[zone]);
             }
-            console.log(resultArray);
             setRecommendedTicket(resultArray);
             setTotalCost(ticketCost);
             setCurrentInputValue("");
