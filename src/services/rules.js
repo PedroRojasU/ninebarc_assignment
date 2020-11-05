@@ -49,14 +49,14 @@ export const rules = {
                         ticketType: {
                             normal: {
                                 typeOfRide: {
-                                    moreThan2: {
+                                    overThreshold: {
                                         rides:">2",
                                         ticketRule: "Buy day ticket",
                                         AB: 8.6,
                                         BC: 8.6,
                                         ABC: 9.6,
                                     },
-                                    lessThan2: {
+                                    underThreshold: {
                                         rides:"<2",
                                         ticketRule: "Buy single tickets",
                                         AB: 2.9,
@@ -68,14 +68,14 @@ export const rules = {
                             },
                             reduced: {
                                 typeOfRide: {
-                                    moreThan3: {
+                                    overThreshold: {
                                         rides:">3",
                                         ticketRule: "Buy day ticket",
                                         AB: 5.5,
                                         BC: 5.5,
                                         ABC: 6,
                                     },
-                                    lessThan3: {
+                                    underThreshold: {
                                         rides:"<3",
                                         ticketRule: "Buy single tickets",
                                         AB: 1.8,

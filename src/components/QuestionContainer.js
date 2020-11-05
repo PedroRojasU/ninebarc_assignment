@@ -19,12 +19,15 @@ const QuestionContainer = props => {
     const [totalCost, setTotalCost] = useState(0);
     const [recommendedTicket, setRecommendedTicket] = useState([]);
     const [stage, setStage] = useState("questions");
+    const [isValidInput, setIsValidInput] = useState(true);
 
     const inputChangeHandler = e => {
         setCurrentInputValue(e.target.value);
     }
 
     const questionChangeHandler = () => {
+        setIsValidInput(true);
+
         console.log(`Are reduced?: ${areReducedTickets}`);
         console.log(treeLocation);
         console.log(questionLog);
@@ -35,10 +38,11 @@ const QuestionContainer = props => {
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "name" }]);
             setCurrentInputValue("");
             setCurrentQuestionText(questions.getAgeOfPassenger);
+            setTreeLocation(["name"]);
             return;
         }
         //Getting age
-        if (questionLog.slice(-1)[0].key === "name" && validateInput("age", currentInputValue)) {
+        if (treeLocation.slice(-1)[0] === "name" && validateInput("age", currentInputValue)) {
             console.log("Getting age");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "age" }]);
             rules.ridingRules.ageGroup.forEach(rule => {
@@ -49,13 +53,14 @@ const QuestionContainer = props => {
             });
             setCurrentInputValue("");
             setCurrentQuestionText(questions.singleRide);
+            setTreeLocation(["age"]);
             return;
         }
         //Asking if single ride
-        if (questionLog.slice(-1)[0].key === "age" && validateInput("single ride", currentInputValue)) {
+        if (treeLocation.slice(-1)[0] === "age" && validateInput("single ride", currentInputValue.toLowerCase().trim())) {
             console.log("Asking if single ride");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "single ride" }]);
-            if (parseInt(currentInputValue) === 1) {
+            if (currentInputValue === "yes") {
                 setCurrentQuestionText(questions.zone);
                 setTreeLocation(["single ride"]);
             } else {
@@ -66,17 +71,17 @@ const QuestionContainer = props => {
             return;
         }
         //Single ride - Getting zone
-        if (treeLocation.slice(-1)[0] === "single ride" && validateInput("zone", currentInputValue)) {
+        if (treeLocation.slice(-1)[0] === "single ride" && validateInput("zone", currentInputValue.trim().toUpperCase())) {
             console.log("Single ride - Getting zone");
-            setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "zone" }]);
+            setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue.trim().toUpperCase(), key: "zone" }]);
             setCurrentQuestionText(questions.short);
-            setZone(currentInputValue);
+            setZone(currentInputValue.trim().toUpperCase());
             setTreeLocation(prevState => [...prevState, "zone"]);
             setCurrentInputValue("");
             return;
         }
         //Multiple ride - Asking if single day
-        if (treeLocation.slice(-1)[0] === "multiple ride" && validateInput("single day", currentInputValue)) {
+        if (treeLocation.slice(-1)[0] === "multiple ride" && validateInput("single day", currentInputValue.toLowerCase().trim())) {
             console.log("Multiple ride - Asking if single day");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "single day" }]);
             setCurrentQuestionText(questions.zone);
@@ -102,21 +107,21 @@ const QuestionContainer = props => {
             return;
         }
         //Multiple ride, single day - Getting zone
-        if (treeLocation.slice(-2)[0] === "multiple ride" && treeLocation.slice(-1)[0] === "single day" && validateInput("zone", currentInputValue)) {
+        if (treeLocation.slice(-2)[0] === "multiple ride" && treeLocation.slice(-1)[0] === "single day" && validateInput("zone", currentInputValue.trim().toUpperCase())) {
             console.log("Multiple ride, single day - Getting zone");
-            setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "zone" }]);
+            setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue.trim().toUpperCase(), key: "zone" }]);
             setCurrentQuestionText(questions.bikes);
-            setZone(currentInputValue);
+            setZone(currentInputValue.trim().toUpperCase());
             setTreeLocation(prevState => [...prevState, "zone"]);
             setCurrentInputValue("");
             return;
         }
         //Multiple ride, multiple day - Getting zone
-        if (treeLocation.slice(-2)[0] === "multiple ride" && treeLocation.slice(-1)[0] === "multiple day" && validateInput("zone", currentInputValue)) {
+        if (treeLocation.slice(-2)[0] === "multiple ride" && treeLocation.slice(-1)[0] === "multiple day" && validateInput("zone", currentInputValue.trim().toUpperCase())) {
             console.log("Multiple ride, multiple day - Getting zone");
-            setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "zone" }]);
+            setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue.trim().toUpperCase(), key: "zone" }]);
             setCurrentQuestionText(questions.bikes);
-            setZone(currentInputValue);
+            setZone(currentInputValue.trim().toUpperCase());
             setTreeLocation(prevState => [...prevState, "zone"]);
             setCurrentInputValue("");
             return;
@@ -127,13 +132,15 @@ const QuestionContainer = props => {
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "bike" }]);
             let ticketType = areReducedTickets ? "reduced" : "normal";
             let ticketCost = rules.ridingRules.singlePassenger.ride.single.rideDistance.short.price;
+            let resultArray = [numberOfPassengers + " " + tickets.short + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.single.rideDistance.short.price];
             if (parseInt(currentInputValue) > 0) {
                 ticketCost = ticketCost + rules.ridingRules.bike.price[zone] * numberOfPassengers;
-                let resultArray = [numberOfPassengers + " " + tickets.short + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.single.rideDistance.short.price, "1 " + tickets.bicycle + ": " + rules.ridingRules.bike.price[zone]]
-                setRecommendedTicket(resultArray);
-            } else {
-                setRecommendedTicket([numberOfPassengers + " " + tickets.short + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.single.rideDistance.short.price])
+                resultArray.push("1 " + tickets.bicycle + ": " + rules.ridingRules.bike.price[zone]);
+                console.log("HEEEEEEEEEEEERE");
+                console.log(rules.ridingRules.bike.price[zone]);
+                console.log(rules);
             }
+            setRecommendedTicket(resultArray);
             setTotalCost(ticketCost);
             setCurrentInputValue("");
             setStage("results");
@@ -145,20 +152,19 @@ const QuestionContainer = props => {
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "bike" }]);
             let ticketType = areReducedTickets ? "reduced" : "normal";
             let ticketCost = rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone][ticketType];
+            let resultArray = [numberOfPassengers + " " + tickets.oneWay + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone][ticketType]];
             if (parseInt(currentInputValue) > 0) {
                 ticketCost = ticketCost + rules.ridingRules.bike.price[zone] * numberOfPassengers;
-                let resultArray = [numberOfPassengers + " " + tickets.oneWay + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone][ticketType], "1 " + tickets.bicycle + ": " + rules.ridingRules.bike.price[zone]]
-                setRecommendedTicket(resultArray);
-            } else {
-                setRecommendedTicket([numberOfPassengers + " " + tickets.oneWay + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone][ticketType]])
+                resultArray.push("1 " + tickets.bicycle + ": " + rules.ridingRules.bike.price[zone]);
             }
+            setRecommendedTicket(resultArray);
             setTotalCost(ticketCost);
             setCurrentInputValue("");
             setStage("results");
             return;
         }
         //Multiple ride, single day - Asking if bike
-        if (treeLocation.slice(-2)[0] === "single day" && treeLocation.slice(-1)[0] === "zone" && validateInput("zone", currentInputValue)) {
+        if (treeLocation.slice(-2)[0] === "single day" && treeLocation.slice(-1)[0] === "zone" && validateInput("bike", currentInputValue)) {
             console.log("Multiple ride, single day - Asking if bike");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "bike" }]);
             areReducedTickets ? setCurrentQuestionText(questions.dayVsSingleReduced) : setCurrentQuestionText(questions.dayVsSingleNormal);
@@ -170,7 +176,7 @@ const QuestionContainer = props => {
             return;
         }
         //Multiple ride, multiple day - Asking if bike
-        if (treeLocation.slice(-2)[0] === "multiple day" && treeLocation.slice(-1)[0] === "zone" && validateInput("zone", currentInputValue)) {
+        if (treeLocation.slice(-2)[0] === "multiple day" && treeLocation.slice(-1)[0] === "zone" && validateInput("bike", currentInputValue)) {
             console.log("Multiple ride, multiple day - Asking if bike");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "bike" }]);
             if (zone === "AB" || zone === "BC") {
@@ -193,18 +199,14 @@ const QuestionContainer = props => {
             let resultArray = [];
             let ticketCost;
             if (currentInputValue === "yes") {
-                resultArray = [numberOfPassengers + " " + tickets.day + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.moreThan3[zone]];
-                ticketCost = rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.moreThan3[zone];
+                resultArray = [numberOfPassengers + " " + tickets.day + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.overThreshold[zone]];
+                ticketCost = rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.overThreshold[zone];
             } else {
-                resultArray = [currentInputValue + " " + tickets.oneWay + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.moreThan3[zone]];
+                resultArray = [currentInputValue + " " + tickets.oneWay + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.overThreshold[zone]];
                 ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].reduced;
             }
             if (bikeSubtotal > 0) {
-                console.log("ticket cost before bike");
-                console.log(ticketCost);
                 ticketCost = ticketCost + (rules.ridingRules.bike.price[zone] * numberOfPassengers);
-                console.log("ticket cost AFTER bike");
-                console.log(ticketCost);
                 resultArray.push("1 " + tickets.bicycle + ": " + rules.ridingRules.bike.price[zone]);
             }
             setRecommendedTicket(resultArray);
@@ -221,8 +223,8 @@ const QuestionContainer = props => {
             let resultArray = [];
             let ticketCost;
             if (currentInputValue === "yes") {
-                resultArray = [numberOfPassengers + " " + tickets.day + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.normal.typeOfRide.moreThan2[zone]];
-                ticketCost = rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.normal.typeOfRide.moreThan2[zone];
+                resultArray = [numberOfPassengers + " " + tickets.day + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.normal.typeOfRide.overThreshold[zone]];
+                ticketCost = rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.normal.typeOfRide.overThreshold[zone];
             } else {
                 resultArray = [currentInputValue + " " + tickets.oneWay + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].normal];
                 ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].normal;
@@ -243,15 +245,14 @@ const QuestionContainer = props => {
             console.log("Multiple ride, multiple day - week vs multi day ticket (AB||BC)");
             setQuestionLog(prevState => [...prevState, { question: currentQuestionText, answer: currentInputValue, key: "week vs multiple one day" }]);
             let ticketType = areReducedTickets ? "reduced" : "normal";
-            // let thresholdText = areReducedTickets ? "moreThan3" : "moreThan2";
             let resultArray;
             let ticketCost;
             if (currentInputValue === "yes") {
                 resultArray = [numberOfPassengers + " " + tickets.week + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.multipleDay.ticketType[zone].overThreshold.cost];
                 ticketCost = rules.ridingRules.singlePassenger.ride.multiple.multipleDay.ticketType[zone].overThreshold.cost;
             } else {
-                resultArray = [currentInputValue + " " + tickets.day + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.moreThan3[zone]];
-                ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.moreThan2[zone];
+                resultArray = [currentInputValue + " " + tickets.day + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.overThreshold[zone]];
+                ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.overThreshold[zone];
             }
             if (bikeSubtotal > 0) {
                 ticketCost = ticketCost + (rules.ridingRules.bike.price[zone] * numberOfPassengers);
@@ -271,11 +272,11 @@ const QuestionContainer = props => {
             let resultArray;
             let ticketCost;
             if (currentInputValue === "yes") {
-                resultArray = [numberOfPassengers + " " + tickets.week + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.multipleDay.ticketType[zone].moreThan3.cost];
-                ticketCost = rules.ridingRules.singlePassenger.ride.multiple.multipleDay.ticketType[zone].moreThan3.cost;
+                resultArray = [numberOfPassengers + " " + tickets.week + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.multipleDay.ticketType[zone].overThreshold.cost];
+                ticketCost = rules.ridingRules.singlePassenger.ride.multiple.multipleDay.ticketType[zone].overThreshold.cost;
             } else {
-                resultArray = [currentInputValue + " " + tickets.day + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.moreThan3[zone]];
-                ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.moreThan2[zone];
+                resultArray = [currentInputValue + " " + tickets.day + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.overThreshold[zone]];
+                ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType[ticketType].typeOfRide.overThreshold[zone];
             }
             if (bikeSubtotal > 0) {
                 ticketCost = ticketCost + (rules.ridingRules.bike.price[zone] * numberOfPassengers);
@@ -287,6 +288,8 @@ const QuestionContainer = props => {
             setStage("results");
             return;
         }
+
+        setIsValidInput(false);
 
     }
 
@@ -302,6 +305,7 @@ const QuestionContainer = props => {
         setTotalCost(0);
         setRecommendedTicket([]);
         setStage("questions");
+        setIsValidInput(true);
     }
 
     const results = (
@@ -330,11 +334,15 @@ const QuestionContainer = props => {
         </div>
     )
 
+    let errorText = (
+        !isValidInput ? <p className="error-message">Invalid input. Please try again</p> : null
+    )
     return (
         <div className="question-container">
             {stage === "questions" ? <React.Fragment>
                 <h4>{currentQuestionText}</h4>
                 <input onChange={e => inputChangeHandler(e)} value={currentInputValue || ""} />
+                {errorText}
                 <div className="button-container">
                     <button onClick={resetHandler}><strong>Start Over</strong></button>
                     <button onClick={questionChangeHandler}><strong>Continue</strong></button>

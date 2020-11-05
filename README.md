@@ -12,8 +12,9 @@ At the end of the questionnaire, the application should recommend a ticket to th
 - Day ticket AB=BC
 - Seven day ticket AB=BC
 - Seven day to day ticket comparison doesn't consider few trips spread on several days. Several one way tickets could be cheaper
-- Day tickets need 1 bike ticket per trip
+- Day tickets need 1 bicycle ticket per trip
 - Multiple rides could be further optimized by getting cheaper zone tickets on different days/rides
+- One passenger can only bring one bicycle.
 
 The decision tree on which the app is based is as follows:
 
@@ -25,16 +26,14 @@ The decision tree on which the app is based is as follows:
 - The app was created using create-react-app for simplicity and speed.
 - The app was made having in mind separation of concerns, scalability and legibility.
 - The business logic (prices, types of tickets and conditions) was abstracted to a json file to simulate data being fetched from the backend and make it easy to modify.
-- Due to the relatively low amount of data and components, the state of the app is managed on a single component without the need of prop drilling. In case the app get optimized by separating the large QuestionContainer component into smaller components, the possibility of a more robust state management approach should be considered.
-- The workflow of the app was designed so that a input validation service is set in place to check that the user inputs comply with the needed format. However due to lack of time it was not possible to implement the different conditions necessary for validation, and so remains deactivated for the time being. 
+- Due to the relatively low amount of data and components, the state of the app is managed on a single component without the need of prop drilling.
+- The app uses the same text input for all questions instead of customized inputs such as buttons or dropdown menus. For this reason it was important to develop a validation service that would make sure the supplied data complies with was is expected. 
 
 ## Observations
 
 - The code would be considerably leaner if all the data could be entered by the user at the same time. Due to the way the challenge was designed this was not possible.
 
-- There are bugs when going through the right side of the decision tree that could not be fixed due to time constraints.
-
-- Ideally the question handling logic should be separated from the component and the UI and set apart on a service class or function.
+- It is recommended that the decision tree navigation logic (questionChangeHandler) be separated from the component and the UI and set apart on a service class or function, as well as a better fitting state management solution (ex: Redux or Context).
 
 ## How to run
 

@@ -9,8 +9,9 @@ body {
 }
 
 .app-content {
-    height: 90vh;
+    height: 87vh;
     overflow-y: scroll;
+    padding-bottom: 3vh;
 }
 
 .app-content {
