@@ -6,6 +6,8 @@ import tickets from '../assets/data/tickets.json';
 import validateInput from '../services/validateInput';
 import { rules } from '../services/rules';
 
+import ResultList from './ResultList';
+
 const QuestionContainer = props => {
 
     const [currentQuestionText, setCurrentQuestionText] = useState(questions.getName);
@@ -193,8 +195,8 @@ const QuestionContainer = props => {
                 resultArray = [numberOfPassengers + " " + tickets.day + " (" + ticketType + "): " + rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.overThreshold[zone]];
                 ticketCost = rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.overThreshold[zone];
             } else {
-                resultArray = [currentInputValue + " " + tickets.oneWay + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.reduced.typeOfRide.overThreshold[zone]];
-                ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].reduced;
+                resultArray = [currentInputValue + " " + tickets.oneWay + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].reduced];
+                ticketCost = parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].reduced;
             }
             if (bikeSubtotal > 0) {
                 ticketCost = ticketCost + (rules.ridingRules.bike.price[zone] * numberOfPassengers);
@@ -218,7 +220,7 @@ const QuestionContainer = props => {
                 ticketCost = rules.ridingRules.singlePassenger.ride.multiple.singleDay.ticketType.normal.typeOfRide.overThreshold[zone];
             } else {
                 resultArray = [currentInputValue + " " + tickets.oneWay + " (" + ticketType + "): " + parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].normal];
-                ticketCost = currentInputValue * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].normal;
+                ticketCost = parseInt(currentInputValue) * rules.ridingRules.singlePassenger.ride.single.rideDistance.long.prices[zone].normal;
             }
             if (bikeSubtotal > 0) {
                 ticketCost = ticketCost + (rules.ridingRules.bike.price[zone] * numberOfPassengers);
@@ -338,6 +340,7 @@ const QuestionContainer = props => {
                     <button onClick={questionChangeHandler}><strong>Continue</strong></button>
                 </div>
             </React.Fragment> : results}
+            
         </div>
     );
 }
